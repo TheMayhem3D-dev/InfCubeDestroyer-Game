@@ -1,59 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Core;
 
-public class BulletMagazine : MonoBehaviour
+namespace Game
 {
-    [SerializeField] private int maxBulletAmount = 5;
-    private int currentBulletAmount;
-    [SerializeField] private float reloadRate = 1f;
-    private Timer reloadRateTimer;
-
-    private void Awake()
+    public class BulletMagazine : MonoBehaviour
     {
-        SetComponents();
-        SetProperties();
-    }
+        [SerializeField] private int maxBulletAmount = 5;
+        private int currentBulletAmount;
+        [SerializeField] private float reloadRate = 1f;
+        private Timer reloadRateTimer;
 
-    private void SetComponents()
-    {
-        reloadRateTimer = new Timer(reloadRate);
-    }
-
-    private void SetProperties()
-    {
-        currentBulletAmount = maxBulletAmount;
-    }
-
-    private void Update()
-    {
-        reloadRateTimer.UpdateTimer();
-        TryReload();
-    }
-
-    private void TryReload()
-    { 
-        if(reloadRateTimer.IsTimerStoped())
+        private void Awake()
         {
-            reloadRateTimer.StartTimer();
-            AddBullet();
+            SetComponents();
+            SetProperties();
         }
-    }
 
-    public void AddBullet()
-    {
-        if (currentBulletAmount < maxBulletAmount)
-            currentBulletAmount++;
-    }
+        private void Start()
+        {
+            GameEvents.main.NotifyOnAmmoCountStarted(maxBulletAmount);
+        }
 
-    public void RemoveBullet()
-    {
-        if (CanShoot())
-            currentBulletAmount--;
-    }
+        private void SetComponents()
+        {
+            reloadRateTimer = new Timer(reloadRate);
+        }
 
-    public bool CanShoot()
-    {
-        return currentBulletAmount > 0;
+        private void SetProperties()
+        {
+            currentBulletAmount = maxBulletAmount;
+        }
+
+        private void Update()
+        {
+            reloadRateTimer.UpdateTimer();
+            TryReload();
+        }
+
+        private void TryReload()
+        {
+            if (reloadRateTimer.IsTimerStoped())
+            {
+                reloadRateTimer.StartTimer();
+                AddBullet();
+            }
+        }
+
+        public void AddBullet()
+        {
+            if (currentBulletAmount < maxBulletAmount)
+            {
+                currentBulletAmount++;
+                UpdateAmmoCount();
+            }
+        }
+
+        public void RemoveBullet()
+        {
+            if (CanShoot())
+            {
+                currentBulletAmount--;
+                UpdateAmmoCount();
+            }
+        }
+
+        public void UpdateAmmoCount()
+        {
+            GameEvents.main.NotifyOnAmmoCountChanged(currentBulletAmount);
+        }
+
+        public bool CanShoot()
+        {
+            return currentBulletAmount > 0;
+        }
     }
 }
