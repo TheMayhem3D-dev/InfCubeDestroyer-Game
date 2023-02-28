@@ -12,7 +12,19 @@ namespace Game
 
         public void Fire()
         {
-            ObjectPooler.SpawnFromPool(bulletTag, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit))
+            {
+                GameObject bulletGo = ObjectPooler.SpawnFromPool(bulletTag, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+                Bullet bullet = bulletGo.GetComponent<Bullet>();
+
+                if (bullet != null)
+                {
+                    bullet.SetUpMovement(raycastHit.point);
+                    bullet.Release();
+                }
+                else
+                    throw new MissingComponentException();
+            }
         }
     }
 }
