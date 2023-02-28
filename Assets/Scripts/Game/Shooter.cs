@@ -39,12 +39,12 @@ namespace Game
         {
             if (fireRateTimer.IsTimerStoped())
             {
-                if (bulletMagazine.CanShoot())
+                if (bulletMagazine.CanTakeEntity())
                 {
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit, Mathf.Infinity, groundLayer))
                     {
                         fireRateTimer.StartTimer();
-                        bulletMagazine.RemoveBullet();
+                        bulletMagazine.RemoveEntity();
                         SpawnBullet(raycastHit.point);
                     }
                 }

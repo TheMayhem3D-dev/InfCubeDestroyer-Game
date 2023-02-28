@@ -30,6 +30,13 @@ namespace Game
             movement.StartMovement();
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.CompareTag("Enemy"))
+            {
+                other.GetComponent<Health>().Kill();
+            }
+        }
 
         public void OnDisable()
         {
