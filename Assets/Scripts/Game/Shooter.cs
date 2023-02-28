@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core;
 
-public class Shooter : MonoBehaviour
+namespace Game
 {
-    [SerializeField] private Transform bulletSpawnPoint;
-    private const string bulletTag = "Bullet";
-
-    public void Fire()
+    public class Shooter : MonoBehaviour
     {
-        ObjectPooler.SpawnFromPool(bulletTag, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        [SerializeField] private Transform bulletSpawnPoint;
+        private const string bulletTag = "Bullet";
+
+        public void Fire()
+        {
+            ObjectPooler.SpawnFromPool(bulletTag, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        }
     }
 }
