@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Game
 {
-    [RequireComponent(typeof(LinearInterpolation))]
+    [RequireComponent(typeof(BulletMovement))]
     public class Bullet : MonoBehaviour
     {
-        private LinearInterpolation movement;
+        private BulletMovement movement;
 
         private void Awake()
         {
@@ -16,8 +16,8 @@ namespace Game
 
         private void SetComponents()
         {
-            movement = GetComponent<LinearInterpolation>();
-            movement.SetInterpolatedObject(gameObject);
+            movement = GetComponent<BulletMovement>();
+            movement.SetBullet(this);
         }
 
         public void SetUpMovement(Vector3 endPoint)
@@ -27,18 +27,23 @@ namespace Game
 
         public void Release()
         {
-            movement.StartInterpolate();
+            movement.StartMovement();
         }
 
 
         public void OnDisable()
         {
-            Reset();
+            ResetBullet();
         }
 
-        public void Reset()
+        public void ResetBullet()
         {
-            movement.StopInterpolate();
+            movement.ResetMovement();
+        }
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
         }
     }
 }
