@@ -35,6 +35,7 @@ public class BulletMagazine : MonoBehaviour
     { 
         if(reloadRateTimer.IsTimerStoped())
         {
+            reloadRateTimer.StartTimer();
             AddBullet();
         }
     }
