@@ -6,14 +6,14 @@ using System;
 
 namespace Game
 {
-    [RequireComponent(typeof(BulletMagazine))]
+    [RequireComponent(typeof(BulletHolder))]
     public class Shooter : MonoBehaviour
     {
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private Transform bulletSpawnPoint;
         private const string bulletTag = "Bullet";
 
-        private BulletMagazine bulletMagazine;
+        private BulletHolder bulletMagazine;
 
         [Header("Shoot Properties")]
         [SerializeField] private float fireRate = 0.5f;
@@ -26,7 +26,7 @@ namespace Game
 
         private void SetComponents()
         {
-            bulletMagazine = GetComponent<BulletMagazine>();
+            bulletMagazine = GetComponent<BulletHolder>();
             fireRateTimer = new Timer(fireRate);
         }
 
