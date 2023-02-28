@@ -35,8 +35,12 @@ namespace Game
 
         private void Update()
         {
-            reloadRateTimer.UpdateTimer();
-            TryReload();
+            if (MagazineNotFilled())
+            {
+                reloadRateTimer.UpdateTimer();
+                GameEvents.main.NotifyOnReloadTimerChanged(reloadRateTimer.TimeRemaining);
+                TryReload();
+            }
         }
 
         private void TryReload()
@@ -50,11 +54,16 @@ namespace Game
 
         public void AddBullet()
         {
-            if (currentBulletAmount < maxBulletAmount)
+            if (MagazineNotFilled())
             {
                 currentBulletAmount++;
                 UpdateAmmoCount();
             }
+        }
+
+        private bool MagazineNotFilled()
+        {
+            return currentBulletAmount < maxBulletAmount;
         }
 
         public void RemoveBullet()
